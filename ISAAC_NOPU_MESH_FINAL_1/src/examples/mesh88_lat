@@ -1,0 +1,112 @@
+// $Id$
+
+// Copyright (c) 2007-2015, Trustees of The Leland Stanford Junior University
+// All rights reserved.
+//
+// Redistribution and use in source and binary forms, with or without
+// modification, are permitted provided that the following conditions are met:
+//
+// Redistributions of source code must retain the above copyright notice, this
+// list of conditions and the following disclaimer.
+// Redistributions in binary form must reproduce the above copyright notice,
+// this list of conditions and the following disclaimer in the documentation
+// and/or other materials provided with the distribution.
+//
+// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+// AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+// IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+// ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+// LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+// CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+// SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+// INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+// CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+// ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+// POSSIBILITY OF SUCH DAMAGE.
+
+//8X8 mesh with 20 flits per packet under injection mode
+//injection rate here is packet per cycle, NOT flit per cycle
+
+// Topology
+
+topology = mesh;
+//topology = torus;
+k = 10;
+n = 2;
+
+// Routing
+//routing_function = adaptive_xy_yx;
+routing_function = dim_order;
+//routing_function = valiant;
+
+// Flow control
+num_vcs     = 4;
+vc_buf_size = 8;
+wait_for_tail_credit = 1;
+
+// Router architecture
+vc_allocator = islip;
+sw_allocator = islip;
+alloc_iters  = 1;
+
+credit_delay   = 2;
+routing_delay  = 1;
+vc_alloc_delay = 1;
+sw_alloc_delay = 1;
+
+input_speedup     = 1;
+output_speedup    = 1;
+internal_speedup  = 1.0;
+
+
+// Traffic
+//traffic = transpose;
+traffic = tornado;
+//traffic = VGG8;
+packet_size = 20;
+injection_process = bernoulli;
+
+//deadlock time
+deadlock_warn_timeout = 256;
+
+// Simulation
+sim_type = latency;
+//sim_type = batch;
+//max_samples = 10;
+//sim_count = 5;
+//stats_out = -;
+//viewer_trace = 1;
+//sample_period = 50;
+noq = 0;
+//watch_out = -;
+watch_out = ./ISAAC_NOPU_MESH_FINAL/src/output_file/watch_file_196;
+include_queuing = 0;
+max_samples = 1;
+sample_period = 5000000;
+latency_thres = 50000.0;
+
+injection_rate = 0.005;
+//stats_out = ./output_file/output;
+//memory limit
+pu_limit = 1000;
+rram_out_limit = 1000;
+ifm_number = 50; 
+
+//neural network mapping
+VGGlayer = 16;
+KernelSize = 9;
+Lastlayer = 10;
+Lastlayernum = 6;
+//each pu send packet size(different with receive layer)
+Pu_packet_size = {32,64,64,64,128,128,128,128,128};
+//Pu_packet_size = {0,1,1,1,1,1,1};
+//each layer send packet number
+Layer_packet_num = {6,6,2,3,6,2,3,3,0,6,0,6,6,6,6,6,6,6,0,3,6,3,0,3,0,6,0,6,1,6,6,0,6,6,2,0,1,6,0,2,2,0,6,6,1,6,0,6,6};
+//each layer pu send number
+Pu_send_num = {1,2,2,3,6,6,6,6,6,0};
+//each node mapping layer
+Node_layer = {10,9,5,6,10,5,6,6,0,7,0,9,10,8,9,8,10,7,0,6,7,6,0,6,0,7,0,8,3,9,8,0,7,9,4,1,3,9,0,5,4,0,10,8,2,7,0,8,10};
+//each pu destination
+Dest_pu = {{44,},{36,28,},{34,40,},{5,39,2,},{7,6,21,23,19,3,},{25,17,45,20,32,9,},{47,15,27,43,13,30,},{29,11,1,33,14,37,},{0,12,16,48,42,4,},{,}};
+//each node input packet size
+Input_size = {128,128,64,128,128,64,128,128,0,128,0,128,128,128,128,128,128,128,0,128,128,128,0,128,0,128,0,128,64,128,128,0,128,128,64,0,64,128,0,64,64,0,128,128,32,128,0,128,128};

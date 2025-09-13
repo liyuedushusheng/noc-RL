@@ -1,0 +1,7 @@
+{
+    "files.associations": {
+        "iostream": "cpp",
+        "mesh88_lat": "cpp",
+        "iosfwd": "cpp"
+    }
+}

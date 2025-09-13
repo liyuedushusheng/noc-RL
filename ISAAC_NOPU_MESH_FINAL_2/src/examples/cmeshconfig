@@ -1,0 +1,114 @@
+// $Id$
+
+// Copyright (c) 2007-2015, Trustees of The Leland Stanford Junior University
+// All rights reserved.
+//
+// Redistribution and use in source and binary forms, with or without
+// modification, are permitted provided that the following conditions are met:
+//
+// Redistributions of source code must retain the above copyright notice, this
+// list of conditions and the following disclaimer.
+// Redistributions in binary form must reproduce the above copyright notice,
+// this list of conditions and the following disclaimer in the documentation
+// and/or other materials provided with the distribution.
+//
+// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+// AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+// IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+// ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+// LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+// CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+// SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+// INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+// CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+// ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+// POSSIBILITY OF SUCH DAMAGE.
+
+//concentrated mesh configuration file running batch mode
+//xr, yr, x, y, are use to indicate how the concnetration is formed. 
+
+topology = cmesh;
+
+k = 3;
+n = 2;
+c = 4;
+xr = 2;
+yr = 2;
+
+x = 2; 
+y = 2;
+
+routing_function = dor_no_express;
+//routing_function = dor;
+
+// Flow control
+//num_vcs     = 8;
+num_vcs     = 4;
+vc_buf_size = 4;
+wait_for_tail_credit = 1;
+
+// Router architecture
+vc_allocator = islip;
+sw_allocator = islip;
+alloc_iters  = 1;
+
+credit_delay   = 2;
+routing_delay  = 1;
+vc_alloc_delay = 1;
+sw_alloc_delay = 1;
+
+input_speedup     = 1;
+output_speedup    = 1;
+internal_speedup  = 1.0;
+
+//traffic pattern
+traffic = tornado;
+packet_size = 20;
+injection_process = bernoulli;
+
+//deadlock time
+deadlock_warn_timeout = 256;
+
+// Simulation
+sim_type = latency;
+//sim_type = batch;
+//max_samples = 10;
+//sim_count = 5;
+//stats_out = -;
+//viewer_trace = 1;
+//sample_period = 50;
+noq = 0;
+//watch_out = -;
+watch_out = ./output_file/watch_file_196;
+include_queuing = 0;
+max_samples = 10;
+sample_period = 50000;
+latency_thres = 50000.0;
+
+injection_rate = 0.005;
+//stats_out = ./output_file/output;
+//memory limit
+pu_limit = 1000;
+rram_out_limit = 1000;
+ifm_number = 1000; 
+
+//neural network mapping
+VGGlayer = 8;
+KernelSize = 9;
+//each node packet size
+Node_packet_size = {5,9,9,9,17,17,17,17,17,17,17,17,17,17,17,17};
+//each pu send packet size(different with receive layer)
+Pu_packet_size = {12,40,20,10,10,10};
+//Pu_packet_size = {0,1,1,1,1,1,1};
+//each layer send packet number
+Layer_packet_num = {0,1,1,1,2,2,2,2,4,4,4,4,4,4,4,4,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8};
+//each layer pu send number
+Pu_send_num = {1,2,4,8,8,8,0};
+//each node mapping layer
+Node_layer = {1,2,3,3,4,4,4,4,5,5,5,5,5,5,5,5,6,6,6,6,6,6,6,6,7,7,7,7,7,7,7,7};
+//each node destination
+Dest_node = {5,5,5,5,5,5,5,5,10,10,10,10,10,10,10,10};
+//each pu destination
+Dest_pu = {{1,},{2,3,},{4,5,6,7,},{8,9,10,11,12,13,14,15,},{16,17,18,19,20,21,22,23,},{24,25,26,27,28,29,30,31,},{-1,-1,-1,}};
+//each node input packet size
+Input_size = {0,12,40,40,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,0,0,0,0};
